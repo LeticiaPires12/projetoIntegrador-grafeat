@@ -1,6 +1,6 @@
 package org.generation.grafeat.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -42,12 +43,16 @@ public class Vendedor {
 	@Size(min = 5, max = 100, message = "O local deve conter no mínimo 5 e no máximo 100 caracteres.")
 	private String localidade;
 	
-	@NotBlank(message = "A data do vendedor não pode ser vazio")
-	private Date dataDeNascimento;
+	@NotNull(message = "A data do vendedor não pode ser vazio")
+	private LocalDate dataDeNascimento;
 	
 	@NotBlank(message = "O tipo de pagamento não pode ser vazio")
 	private String tipoDePagamento;
 
+	@OneToMany(mappedBy = "vendedor", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("vendedor")
+	private List<Produto> produto;
+	
 	public Long getId() {
 		return id;
 	}
@@ -96,20 +101,28 @@ public class Vendedor {
 		this.localidade = localidade;
 	}
 
-	public Date getDataDeNascimento() {
+	public LocalDate getDataDeNascimento() {
 		return dataDeNascimento;
 	}
 
-	public void setDataDeNascimento(Date dataDeNascimento) {
+	public void setDataDeNascimento(LocalDate dataDeNascimento) {
 		this.dataDeNascimento = dataDeNascimento;
 	}
 
 	public String getTipoDePagamento() {
-		return tipoDePagamento;
+		return tipoDePagamento;	
 	}
 
 	public void setTipoDePagamento(String tipoDePagamento) {
 		this.tipoDePagamento = tipoDePagamento;
+	}
+
+	public List<Produto> getProduto() {
+		return produto;
+	}
+
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
 	}
 	
 }
